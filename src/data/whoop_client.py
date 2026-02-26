@@ -113,7 +113,8 @@ class WhoopClient:
     ) -> RecoveryMetrics:
         """Convert Whoop API v2 data into a RecoveryMetrics model instance."""
         score = recovery.get("score", {})
-        sleep_data = sleep.get("score", {}) if sleep else {}
+        sleep_score = sleep.get("score", {}) if sleep else {}
+        stages = sleep_score.get("stage_summary", {})
         strain_data = strain.get("score", {}) if strain else {}
 
         rec_date = datetime.fromisoformat(
@@ -125,29 +126,29 @@ class WhoopClient:
             resting_hr=int(score.get("resting_heart_rate", 0)) or None,
             hrv_rmssd=score.get("hrv_rmssd_milli"),
             sleep_duration_minutes=(
-                int(sleep_data.get("total_in_bed_time_milli", 0) / 60000)
-                if sleep_data.get("total_in_bed_time_milli")
+                int(stages.get("total_in_bed_time_milli", 0) / 60000)
+                if stages.get("total_in_bed_time_milli")
                 else None
             ),
-            sleep_quality_score=sleep_data.get("sleep_performance_percentage"),
+            sleep_quality_score=sleep_score.get("sleep_performance_percentage"),
             deep_sleep_minutes=(
-                int(sleep_data.get("total_slow_wave_sleep_time_milli", 0) / 60000)
-                if sleep_data.get("total_slow_wave_sleep_time_milli")
+                int(stages.get("total_slow_wave_sleep_time_milli", 0) / 60000)
+                if stages.get("total_slow_wave_sleep_time_milli")
                 else None
             ),
             rem_sleep_minutes=(
-                int(sleep_data.get("total_rem_sleep_time_milli", 0) / 60000)
-                if sleep_data.get("total_rem_sleep_time_milli")
+                int(stages.get("total_rem_sleep_time_milli", 0) / 60000)
+                if stages.get("total_rem_sleep_time_milli")
                 else None
             ),
             light_sleep_minutes=(
-                int(sleep_data.get("total_light_sleep_time_milli", 0) / 60000)
-                if sleep_data.get("total_light_sleep_time_milli")
+                int(stages.get("total_light_sleep_time_milli", 0) / 60000)
+                if stages.get("total_light_sleep_time_milli")
                 else None
             ),
             awake_minutes=(
-                int(sleep_data.get("total_awake_time_milli", 0) / 60000)
-                if sleep_data.get("total_awake_time_milli")
+                int(stages.get("total_awake_time_milli", 0) / 60000)
+                if stages.get("total_awake_time_milli")
                 else None
             ),
             whoop_recovery_score=score.get("recovery_score"),

@@ -114,12 +114,14 @@ class TestWhoopClient:
         }
         sleep = {
             "score": {
-                "total_in_bed_time_milli": 28800000,  # 480 min
                 "sleep_performance_percentage": 88.0,
-                "total_slow_wave_sleep_time_milli": 5400000,  # 90 min
-                "total_rem_sleep_time_milli": 6000000,  # 100 min
-                "total_light_sleep_time_milli": 14400000,  # 240 min
-                "total_awake_time_milli": 3000000,  # 50 min
+                "stage_summary": {
+                    "total_in_bed_time_milli": 28800000,  # 480 min
+                    "total_slow_wave_sleep_time_milli": 5400000,  # 90 min
+                    "total_rem_sleep_time_milli": 6000000,  # 100 min
+                    "total_light_sleep_time_milli": 14400000,  # 240 min
+                    "total_awake_time_milli": 3000000,  # 50 min
+                },
             },
         }
         strain = {
